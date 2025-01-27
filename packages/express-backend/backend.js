@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
@@ -55,6 +56,7 @@ const deleteUserById = (id) => {
   return false;
 };
 
+app.use(cors())
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -100,7 +102,7 @@ app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
   const result = deleteUserById(id);
   if (result) {
-    res.status(200).send(`User was deleted.`);
+    res.status(200).send("User was deleted.");
   } else {
     res.status(404).send("Resource not found.");
   }
