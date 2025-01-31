@@ -56,6 +56,10 @@ const deleteUserById = (id) => {
   return false;
 };
 
+function idGenerator() {
+  return Math.floor(Math.random() * 1000000).toString();
+}
+
 app.use(cors())
 app.use(express.json());
 
@@ -94,15 +98,16 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const userToAddWithId = { id: idGenerator(), ...userToAdd };
+  addUser(userToAddWithId);
+  res.status(201).send(userToAddWithId);
 });
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params["id"];
   const result = deleteUserById(id);
   if (result) {
-    res.status(200).send("User was deleted.");
+    res.status(204).send();
   } else {
     res.status(404).send("Resource not found.");
   }
